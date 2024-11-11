@@ -145,6 +145,87 @@ void unitTest() {
     promptUnitTest();
 }
 
+void addWord(LinkedList& myList) {
+    string addWordInput;
+    string cleanedAddedWord;
+    string prevWord;
+    string nextWord;
+    cout << "Enter a word to add to the end of the chosen Dictionary: ";
+    cin >> addWordInput;
+    
+    // Clean the input word (remove non-alphabetic characters and convert to lowercase)
+    for (char c : addWordInput) {
+        if (isalpha(c)) {
+            cleanedAddedWord += tolower(c);
+        }
+    }
+
+    cout << "Your word was '" << cleanedAddedWord << "'." << endl;
+
+    // Search for the word in the list
+    bool found = myList.linearSearch(cleanedAddedWord, prevWord, nextWord);
+    
+    if (!found) {
+        cout << "We did not find your word." << endl;
+        myList.push_back(cleanedAddedWord);  // Add the word to the list
+        cout << "Adding word to dictionary..." << endl;
+        cout << "        Added!" << endl;
+
+        // Now check the previous and next word for the newly added word
+        bool lastWordFound = myList.linearSearch(cleanedAddedWord, prevWord, nextWord);
+        if (lastWordFound) {
+            cout << "The previous word would be '" << prevWord << "'." << endl;
+            if (nextWord.empty()) {
+                // If nextWord is empty, print that it is the last word
+                cout << "There is no word after " << cleanedAddedWord << ". It is the last word." << endl;
+            } else {
+                cout << "The next word would be '" << nextWord << "'." << endl;
+            }
+        }
+    } else {
+        cout << "The previous word would be '" << prevWord << "'." << endl;
+        if (nextWord.empty()) {
+            cout << "There is no word after " << cleanedAddedWord << ". It is the last word." << endl;
+        } else {
+            cout << "The next word would be '" << nextWord << "'." << endl;
+        }
+    }
+}
+
+
+
+void linearSearch(LinkedList& myList) {
+    string searchWord;
+    cout << "Enter a word to find: ";
+    cin >> searchWord;
+
+    // Clean the input word for display purposes
+    string cleanedInput;
+    for (char c : searchWord) {
+        if (isalpha(c)) {
+            cleanedInput += tolower(c);
+        }
+    }
+
+    cout << "Your word was '" << cleanedInput << "'." << endl;
+
+    // Call findWord to search for the word in the linked list
+    Node* resultNode = findWord(&myList, cleanedInput);
+
+    if (resultNode != nullptr) {
+        // Retrieve previous and next words
+        string prevWord = resultNode->getPrev() ? resultNode->getPrev()->getWord() : "";
+        string nextWord = resultNode->getNext() ? resultNode->getNext()->getWord() : "";
+
+        cout << "The previous word would be '" << prevWord << "'." << endl;
+        cout << "The next word would be '" << nextWord << "'." << endl;
+    } else {
+        cout << "We did not find your word." << endl;
+    }
+}
+
+
+
 int main() 
 {
     LinkedList* myList = new LinkedList; 
@@ -173,6 +254,12 @@ int main()
                 break;
             case UNIT_TEST:
                 promptUnitTest();
+                break;
+            case ADD_WORD:
+                addWord(*myList);
+                break;
+            case LINEAR_SEARCH:
+                linearSearch(*myList);
                 break;
             default:
                 cout << "Coming Soon!" << endl; 

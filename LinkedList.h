@@ -1,4 +1,3 @@
-// LinkedList.h
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
@@ -26,9 +25,13 @@ public:
     void clear();
     int size();
     void print(ostream& os = cout);
+    bool linearSearch(const string& word, string& prevWord, string& nextWord);
 
     Node* getHead() const;
     Node* getTail() const;
 };
+
+// Function declaration
+Node* findWord(LinkedList* lDict, string userWord);
 
 #endif
