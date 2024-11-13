@@ -95,10 +95,10 @@ void openDict(LinkedList& myList, int& currentDictionary) {
             cout << "That number is not in the available range! Pick another." << endl;
             cout << endl;
             cout << "Which Dictionary should be opened? Enter a number from \"" << min_dict_option << "\" to \"" << max_dict_option << "\": " << endl;
-         } else if (dictChoice == 10) {
-             cout << "ERROR! Cannot read chosen dictionary dictionary10.txt. Dictionary 1 remains open." << endl;
-             cout << endl;
-             validChoice = true;
+        // } else if (dictChoice == 6) {
+        //     cout << "ERROR! Cannot read chosen dictionary dictionary6.txt. Dictionary 1 remains open." << endl;
+        //     cout << endl;
+        //     validChoice = true;
         } else {
             validChoice = true;
             currentDictionary = dictChoice;
@@ -283,59 +283,6 @@ void deleteWordFromDictionary(LinkedList& myList) {
 
 
 
-void insertWordInOrder(LinkedList& myList) {
-    string word;
-    cout << "Enter a word to insert in order in the chosen Dictionary: ";
-    cin >> word;
-
-    Node* current = myList.getHead();  // Start from the head of the list
-    bool wordFound = false;
-
-    // Traverse the list to check if the word already exists or find the right insertion point
-    while (current != nullptr) {
-        if (current->getWord() == word) {
-            wordFound = true;
-            break;  // Word found, no need to insert
-        } else if (current->getWord() > word) {
-            break;  // We found the position where the word should be inserted
-        }
-        current = current->getNext();
-    }
-
-    if (wordFound) {
-        cout << "Your word was '" << word << "'.\n";
-        if (current->getPrev()) {
-            cout << " The previous word would be '" << current->getPrev()->getWord() << "'.\n";
-        } else {
-            cout << " There is no word before '" << word << "'. It is the first word.\n";
-        }
-        if (current->getNext()) {
-            cout << " The next word would be '" << current->getNext()->getWord() << "'.\n";
-        } else {
-            cout << " There is no word after '" << word << "'. It is the last word.\n";
-        }
-    } else {
-        // Word not found, insert it in the correct position
-        cout << "We did not find your word. Adding word to dictionary...\n";
-        
-        // Insert the word in the correct position (before current node)
-        Node* newNode = myList.insert_before(word, current);
-        cout << "Inserted!\n";
-
-        // Display the previous and next words
-        if (newNode->getPrev()) {
-            cout << " The previous word would be '" << newNode->getPrev()->getWord() << "'.\n";
-        } else {
-            cout << " There is no word before '" << word << "'. It is the first word.\n";
-        }
-        if (newNode->getNext()) {
-            cout << " The next word would be '" << newNode->getNext()->getWord() << "'.\n";
-        } else {
-            cout << " There is no word after '" << word << "'. It is the last word.\n";
-        }
-    }
-}
-
 
 int main() 
 {
@@ -375,9 +322,6 @@ int main()
                 break;
             case DELETE_WORD:
                 deleteWordFromDictionary(*myList);
-                break;
-            case INSERT_IN_ORDER:
-                insertWordInOrder(*myList);
                 break;
             default:
                 cout << "Coming Soon!" << endl; 

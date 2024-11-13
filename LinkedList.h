@@ -26,8 +26,7 @@ public:
     void clear();
     int size();
     void print(ostream& os = cout);
-    Node* linearSearch(const string& word, string& prevWord, string& nextWord);
-    Node* insert_before(string newWord, Node* knownNode);
+    Node* linearSearch(const string& word, string& prevWord, string& nextWord);  // Corrected return type
 
     // Declare the deleteWord method which deletes a node and returns the next node
     Node* deleteWord(Node* nodeToDelete);
