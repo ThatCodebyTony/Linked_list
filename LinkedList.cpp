@@ -21,16 +21,22 @@ LinkedList::~LinkedList() {
 void LinkedList::push_back(const string& word) {
     Node* newNode = new Node(word);
     if (tail == nullptr) {
-        // List is empty
         head = newNode;
         tail = newNode;
+        // cout << "First word added: " << word << endl;  // Debugging line
     } else {
-        (*tail).setNext(newNode);
-        (*newNode).setPrev(tail);
+        tail->setNext(newNode);
+        newNode->setPrev(tail);
         tail = newNode;
+        // cout << "Added word: " << word << endl;  // Debugging line
+    }
+    // Ensure head is not nullptr
+    if (head == nullptr) {
+        head = newNode;
     }
     listSize++;
 }
+
 
 int LinkedList::size() {
     return listSize;
@@ -39,23 +45,29 @@ int LinkedList::size() {
 void LinkedList::clear() {
     Node* current = head;
     while (current != nullptr) {
-        Node* nextNode = current->getNext();  // Save the next node
-        delete current;  // Delete the current node
-        current = nextNode;  // Move to the next node
+        Node* nextNode = current->getNext();
+        delete current;
+        current = nextNode;
     }
     head = nullptr;  // Reset head and tail to nullptr after clearing
     tail = nullptr;
-    listSize = 0;  // Reset list size to 0
+    listSize = 0;  // Reset list size
 }
-
 
 void LinkedList::print(ostream& os) {
-    Node* current = head;
-    while (current != nullptr) {
-        os << (*current).getWord() << endl;
-        current = (*current).getNext();
+    if (head == nullptr) {
+        // os << "The list is empty." << endl;
+    } else {
+        Node* current = head;
+        while (current != nullptr) {
+            os << current->getWord() << endl;
+            current = current->getNext();
+        }
     }
 }
+
+
+
 
 Node* LinkedList::getHead() const {
     return head;
@@ -144,35 +156,36 @@ Node* LinkedList::deleteWord(Node* nodeToDelete) {
         return nullptr;  // Nothing to delete if the node is nullptr
     }
 
-    // If nodeToDelete is the first node in the list
     if (nodeToDelete == head) {
         head = nodeToDelete->getNext();
         if (head != nullptr) {
-            head->setPrev(nullptr);  // Set the previous pointer of the new head to nullptr
-        }
-    } 
-    // If nodeToDelete is the last node in the list
-    else if (nodeToDelete == tail) {
-        tail = nodeToDelete->getPrev();
-        if (tail != nullptr) {
-            tail->setNext(nullptr);  // Set the next pointer of the new tail to nullptr
-        }
-    } 
-    // If nodeToDelete is in the middle of the list
-    else {
-        Node* prevNode = nodeToDelete->getPrev();
-        Node* nextNode = nodeToDelete->getNext();
-
-        if (prevNode != nullptr) {
-            prevNode->setNext(nextNode);
-        }
-        if (nextNode != nullptr) {
-            nextNode->setPrev(prevNode);
+            head->setPrev(nullptr);
         }
     }
 
-    Node* nextNode = nodeToDelete->getNext();
-    delete nodeToDelete;  // Deallocate memory for the deleted node
+    if (nodeToDelete == tail) {
+        tail = nodeToDelete->getPrev();
+        if (tail != nullptr) {
+            tail->setNext(nullptr);
+        }
+    }
+
+    if (nodeToDelete->getPrev() != nullptr) {
+        nodeToDelete->getPrev()->setNext(nodeToDelete->getNext());
+    }
+    if (nodeToDelete->getNext() != nullptr) {
+        nodeToDelete->getNext()->setPrev(nodeToDelete->getPrev());
+    }
+
+    delete nodeToDelete;
     listSize--;
-    return nextNode;  // Return the next node (or nullptr if it was the last node)
+
+    // If the list is now empty, ensure both head and tail are nullptr
+    if (listSize == 0) {
+        head = nullptr;
+        tail = nullptr;
+    }
+
+    return nullptr;
 }
+

@@ -152,7 +152,7 @@ void addWord(LinkedList& myList) {
     string nextWord;
     cout << "Enter a word to add to the end of the chosen Dictionary: ";
     cin >> addWordInput;
-    
+
     // Clean the input word (remove non-alphabetic characters and convert to lowercase)
     for (char c : addWordInput) {
         if (isalpha(c)) {
@@ -162,38 +162,77 @@ void addWord(LinkedList& myList) {
 
     cout << "Your word was '" << cleanedAddedWord << "'." << endl;
 
-    // Search for the word in the list
+    // Search for the word in the list (before insertion)
     Node* node = myList.linearSearch(cleanedAddedWord, prevWord, nextWord);
 
     if (node == nullptr) {
+        // Word is not found, so add it
         cout << " We did not find your word." << endl;
         myList.push_back(cleanedAddedWord);  // Add the word to the list
         cout << " Adding word to dictionary..." << endl;
         cout << "        Added!" << endl;
 
-        // Now check the previous and next word for the newly added word
-        Node* newNode = myList.linearSearch(cleanedAddedWord, prevWord, nextWord);
-        if (newNode != nullptr) {
-            // Handle the first word case (no previous word)
-            if (prevWord.empty()) {
-                cout << " There is no word before " << cleanedAddedWord << ". It is the first word." << endl;
+        // After the word is inserted, check for the previous and next words
+        // Get the last node (tail)
+        Node* tailNode = myList.getTail();
+
+        if (tailNode != nullptr) {
+            // Handle the previous word (the word before the newly added word)
+            if (tailNode->getPrev()) {
+                prevWord = tailNode->getPrev()->getWord();
             } else {
-                cout << " The previous word would be '" << prevWord << "'." << endl;
+                // Case when it is the first word
+                prevWord = "";
             }
 
-            // Handle the last word case (no next word)
-            if (nextWord.empty()) {
-                cout << " There is no word after " << cleanedAddedWord << ". It is the last word." << endl;
+            // Handle the next word (after the newly added word)
+            if (tailNode->getNext()) {
+                nextWord = tailNode->getNext()->getWord();
             } else {
-                cout << " The next word would be '" << nextWord << "'." << endl;
+                // Case when it is the last word
+                nextWord = "";
+            }
+
+            // Only print the previous and next words if they are different from the added word
+            if (prevWord != cleanedAddedWord && nextWord != cleanedAddedWord) {
+                // If prevWord is not the same as cleanedAddedWord, print it
+                if (prevWord.empty()) {
+                    cout << " There is no word before " << cleanedAddedWord << ". It is the first word." << endl;
+                } else {
+                    cout << " The previous word would be '" << prevWord << "'." << endl;
+                }
+
+                // If nextWord is not the same as cleanedAddedWord, print it
+                if (nextWord.empty()) {
+                    cout << " There is no word after " << cleanedAddedWord << ". It is the last word." << endl;
+                } else {
+                    cout << " The next word would be '" << nextWord << "'." << endl;
+                }
+            } else {
+                // If the previous and next words are the same as the cleaned added word
+                // Simply print that it's the first and last word
+                if (prevWord == cleanedAddedWord && nextWord == cleanedAddedWord) {
+                    cout << " There is no word before " << cleanedAddedWord << ". It is the first word." << endl;
+                    cout << " There is no word after " << cleanedAddedWord << ". It is the last word." << endl;
+                }
             }
         }
     } else {
-        cout << " The word '" << cleanedAddedWord << "' already exists in the dictionary." << endl;
+        // Word is already in the dictionary, just report its position
+        // Output the previous and next words of the found word
+        if (prevWord.empty()) {
+            cout << " There is no word before " << cleanedAddedWord << ". It is the first word." << endl;
+        } else {
+            cout << " The previous word would be '" << prevWord << "'." << endl;
+        }
+
+        if (nextWord.empty()) {
+            cout << " There is no word after " << cleanedAddedWord << ". It is the last word." << endl;
+        } else {
+            cout << " The next word would be '" << nextWord << "'." << endl;
+        }
     }
 }
-
-
 
 
 void linearSearch(LinkedList& myList) {
