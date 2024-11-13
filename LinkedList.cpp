@@ -90,41 +90,32 @@ void LinkedList::setSize(int s) {
 // }
 
 // overloaded linearSearch function
-bool LinkedList::linearSearch(const string& word, string& prevWord, string& nextWord) {
+Node* LinkedList::linearSearch(const string& word, string& prevWord, string& nextWord) {
     Node* current = head;
-    
-    // Traverse the list and compare each word
+    prevWord = "";
+    nextWord = "";
+
     while (current != nullptr) {
-        if ((*current).getWord() == word) {
-            // If word is found, get the previous and next words
-            if ((*current).getPrev() != nullptr) {
+        if (current->getWord() == word) {
+            // Fill previous and next words
+            if (current->getPrev()) {
                 prevWord = current->getPrev()->getWord();
-            } else {
-                prevWord = "";
             }
-
-            if ((*current).getNext() != nullptr) {
-                nextWord = (*current).getNext()->getWord();
-            } else {
-                nextWord = "";
+            if (current->getNext()) {
+                nextWord = current->getNext()->getWord();
             }
-            return true;  
+            return current;  // Return the node where the word is found
+        } else if (current->getWord() < word) {
+            prevWord = current->getWord();
+        } else if (current->getWord() > word && nextWord.empty()) {
+            nextWord = current->getWord();
         }
-        current = (*current).getNext();  
+        current = current->getNext();
     }
 
-    // If word is not found, return the last word in the list as prevWord
-    if (head != nullptr) {
-        current = head;
-        // Traverse to the last node
-        while (current->getNext() != nullptr) {
-            current = current->getNext();
-        }
-        prevWord = current->getWord();
-        nextWord = "";  // Since there's no next word after the last one
-    }
-    return false;  
+    return nullptr;  // Return nullptr if the word was not found
 }
+
 
 // Function to find a word in the linked list
 Node* findWord(LinkedList* lDict, string userWord) {
@@ -147,3 +138,80 @@ Node* findWord(LinkedList* lDict, string userWord) {
 
     return nullptr;  // Return nullptr if the word is not found
 }
+
+Node* LinkedList::deleteWord(Node* nodeToDelete) {
+    if (nodeToDelete == nullptr) {
+        return nullptr;  // Nothing to delete if the node is nullptr
+    }
+
+    // If nodeToDelete is the first node in the list
+    if (nodeToDelete == head) {
+        head = nodeToDelete->getNext();
+        if (head != nullptr) {
+            head->setPrev(nullptr);  // Set the previous pointer of the new head to nullptr
+        }
+    } 
+    // If nodeToDelete is the last node in the list
+    else if (nodeToDelete == tail) {
+        tail = nodeToDelete->getPrev();
+        if (tail != nullptr) {
+            tail->setNext(nullptr);  // Set the next pointer of the new tail to nullptr
+        }
+    } 
+    // If nodeToDelete is in the middle of the list
+    else {
+        Node* prevNode = nodeToDelete->getPrev();
+        Node* nextNode = nodeToDelete->getNext();
+
+        if (prevNode != nullptr) {
+            prevNode->setNext(nextNode);
+        }
+        if (nextNode != nullptr) {
+            nextNode->setPrev(prevNode);
+        }
+    }
+
+    Node* nextNode = nodeToDelete->getNext();
+    delete nodeToDelete;  // Deallocate memory for the deleted node
+    listSize--;
+    return nextNode;  // Return the next node (or nullptr if it was the last node)
+}
+
+Node* LinkedList::insert_before(string newWord, Node* knownNode) {
+    if (!knownNode) return nullptr;  // If knownNode is null, return nullptr.
+
+    // Create a new node to hold the word
+    Node* newNode = new Node(newWord);
+
+    // If we're inserting before the head
+    if (knownNode == head) {
+        newNode->setNext(head); // The new node's next points to the current head
+        newNode->setPrev(nullptr); // The new node has no previous node
+
+        // Update the head pointer of the linked list to the new node
+        head = newNode;
+
+        // Update the previous pointer of the old head
+        if (newNode->getNext()) {
+            newNode->getNext()->setPrev(newNode);
+        }
+    } else {
+        // Otherwise, we're inserting somewhere in the middle or at the tail
+        newNode->setNext(knownNode); // The new node's next points to the known node
+        newNode->setPrev(knownNode->getPrev()); // The new node's previous points to the node before knownNode
+
+        // Update the previous node's next pointer to the new node
+        if (knownNode->getPrev()) {
+            knownNode->getPrev()->setNext(newNode);
+        }
+
+        // Update the knownNode's previous pointer to the new node
+        knownNode->setPrev(newNode);
+    }
+
+    // Increment list size
+    listSize++;
+
+    return newNode; // Return the newly inserted node
+}
+

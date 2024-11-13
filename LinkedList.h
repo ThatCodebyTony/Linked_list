@@ -21,17 +21,22 @@ public:
     LinkedList();
     LinkedList(const string& wordInfo);
     ~LinkedList();
+
     void push_back(const string& word);
     void clear();
     int size();
     void print(ostream& os = cout);
-    bool linearSearch(const string& word, string& prevWord, string& nextWord);
+    Node* linearSearch(const string& word, string& prevWord, string& nextWord);
+    Node* insert_before(string newWord, Node* knownNode);
+
+    // Declare the deleteWord method which deletes a node and returns the next node
+    Node* deleteWord(Node* nodeToDelete);
 
     Node* getHead() const;
     Node* getTail() const;
 };
 
-// Function declaration
+// Function declaration for external use
 Node* findWord(LinkedList* lDict, string userWord);
 
 #endif
