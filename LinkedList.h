@@ -7,7 +7,7 @@
 
 using namespace std;
 
-struct LinkedList {
+class LinkedList {
 private:
     Node* head;
     Node* tail;
@@ -26,10 +26,12 @@ public:
     void clear();
     int size();
     void print(ostream& os = cout);
-    Node* linearSearch(const string& word, string& prevWord, string& nextWord);  // Corrected return type
-
-    // Declare the deleteWord method which deletes a node and returns the next node
+    Node* linearSearch(const string& word, string& prevWord, string& nextWord);
     Node* deleteWord(Node* nodeToDelete);
+    Node* insert_before(string newWord, Node* knownNode);
+
+    // Declare the insert_in_order method
+    void insert_in_order(const string& newWord);
 
     Node* getHead() const;
     Node* getTail() const;

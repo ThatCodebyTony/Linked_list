@@ -1,7 +1,6 @@
-// Node.cpp
 #include "Node.h"
 
-Node::Node() : word(""), next(nullptr), prev(nullptr) {}
+Node::Node() : next(nullptr), prev(nullptr) {}
 
 Node::Node(const string& w) : word(w), next(nullptr), prev(nullptr) {}
 
@@ -9,24 +8,24 @@ string Node::getWord() const {
     return word;
 }
 
-void Node::setNext(Node* n) {
-    next = n;
-}
-
-void Node::setPrev(Node* p) {
-    prev = p;
+void Node::setWord(const string& newWord) {
+    word = newWord;
 }
 
 Node* Node::getNext() const {
     return next;
 }
 
+void Node::setNext(Node* n) {
+    next = n;
+}
+
 Node* Node::getPrev() const {
     return prev;
 }
 
-void Node::setWord(const string& newWord) {
-    word = newWord;
+void Node::setPrev(Node* p) {
+    prev = p;
 }
 
 

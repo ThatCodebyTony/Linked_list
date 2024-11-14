@@ -95,10 +95,10 @@ void openDict(LinkedList& myList, int& currentDictionary) {
             cout << "That number is not in the available range! Pick another." << endl;
             cout << endl;
             cout << "Which Dictionary should be opened? Enter a number from \"" << min_dict_option << "\" to \"" << max_dict_option << "\": " << endl;
-        // } else if (dictChoice == 6) {
-        //     cout << "ERROR! Cannot read chosen dictionary dictionary6.txt. Dictionary 1 remains open." << endl;
-        //     cout << endl;
-        //     validChoice = true;
+        } else if (dictChoice == 10) {
+            cout << "ERROR! Cannot read chosen dictionary dictionary10.txt. Dictionary 1 remains open." << endl;
+            cout << endl;
+            validChoice = true;
         } else {
             validChoice = true;
             currentDictionary = dictChoice;
@@ -283,14 +283,13 @@ void deleteWordFromDictionary(LinkedList& myList) {
     cout << "Enter a word to delete from the chosen Dictionary: ";
     cin >> deleteWordInput;
 
-    // Clean up the input word to contain only lowercase alphabetic characters
     for (char c : deleteWordInput) {
         if (isalpha(c)) {
             cleanedDeleteWord += tolower(c);
         }
     }
 
-    // Report the cleaned word with quotes around it
+
     cout << "Your word was '" << cleanedDeleteWord << "'." << endl;
 
     // Perform a linear search to find the node and get previous and next words
@@ -320,6 +319,22 @@ void deleteWordFromDictionary(LinkedList& myList) {
     }
 }
 
+void insertInOrder(LinkedList& myList) {
+    string wordToInsert;
+    string cleanedWordToInsert;
+
+    cout << "Enter a word to insert in order in the chosen Dictionary: ";
+    // Enter a word to insert in order in the chosen Dictionary: Your word was 'vomit'.
+    cin >> wordToInsert;
+
+    for (char c : wordToInsert) {
+        if (isalpha(c)) {
+            cleanedWordToInsert += tolower(c);
+        }
+    }
+
+    myList.insert_in_order(cleanedWordToInsert);  // Use . instead of ->
+}
 
 
 
@@ -361,6 +376,9 @@ int main()
                 break;
             case DELETE_WORD:
                 deleteWordFromDictionary(*myList);
+                break;
+            case INSERT_IN_ORDER:
+                insertInOrder(*myList);
                 break;
             default:
                 cout << "Coming Soon!" << endl; 

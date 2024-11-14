@@ -189,3 +189,109 @@ Node* LinkedList::deleteWord(Node* nodeToDelete) {
     return nullptr;
 }
 
+
+void LinkedList::insert_in_order(const string& newWord) {
+    Node* current = head;
+    Node* prevNode = nullptr;
+
+    // Traverse the list to find the correct position
+    while (current != nullptr && current->getWord() < newWord) {
+        prevNode = current;
+        current = current->getNext();
+    }
+
+    // Now, check if the word is found
+    if (current != nullptr && current->getWord() == newWord) {
+        // Word already exists
+        cout << "Your word was '" << newWord << "'." << endl;
+        // Output previous and next words
+        if (current->getPrev()) {
+            cout << " The previous word would be '" << current->getPrev()->getWord() << "'." << endl;
+        } else {
+            cout << " There is no word before " << newWord << ". It is the first word." << endl;
+        }
+        if (current->getNext()) {
+            cout << " The next word would be '" << current->getNext()->getWord() << "'." << endl;
+        } else {
+            cout << " There is no word after " << newWord << ". It is the last word." << endl;
+        }
+        return;
+    }
+
+    // Word not found, insert it
+    cout << "Your word was '" << newWord << "'." << endl;
+    cout << " We did not find your word. Adding word to dictionary..." << endl;
+
+    Node* newNode = new Node(newWord);
+
+    if (prevNode == nullptr) {
+        // Insert at the beginning
+        newNode->setNext(head);
+        if (head != nullptr) {
+            head->setPrev(newNode);
+        } else {
+            tail = newNode; // List was empty
+        }
+        head = newNode;
+    } else {
+        // Insert after prevNode
+        newNode->setNext(prevNode->getNext());
+        newNode->setPrev(prevNode);
+        prevNode->setNext(newNode);
+        if (newNode->getNext() != nullptr) {
+            newNode->getNext()->setPrev(newNode);
+        } else {
+            tail = newNode; // Inserted at the end
+        }
+    }
+    listSize++;
+
+    cout << "Inserted!" << endl;
+
+    // Output previous and next words
+    if (newNode->getPrev()) {
+        cout << " The previous word would be '" << newNode->getPrev()->getWord() << "'." << endl;
+    } else {
+        cout << " There is no word before " << newWord << ". It is the first word." << endl;
+    }
+    if (newNode->getNext()) {
+        cout << " The next word would be '" << newNode->getNext()->getWord() << "'." << endl;
+    } else {
+        cout << " There is no word after " << newWord << ". It is the last word." << endl;
+    }
+}
+
+
+
+
+Node* LinkedList::insert_before(string newWord, Node* knownNode) {
+    if (knownNode == nullptr) {
+        // Cannot insert before a null node
+        return nullptr;
+    }
+
+    // Create a new node
+    Node* newNode = new Node(newWord);
+
+    // If knownNode is the head
+    if (knownNode == head) {
+        // Insert at the beginning
+        newNode->setNext(head);
+        head->setPrev(newNode);
+        head = newNode;
+    }
+    else {
+        // Insert before knownNode
+        Node* prevNode = knownNode->getPrev();
+        prevNode->setNext(newNode);
+        newNode->setPrev(prevNode);
+        newNode->setNext(knownNode);
+        knownNode->setPrev(newNode);
+    }
+
+    // Increment the list size
+    listSize++;
+
+    return newNode;
+}
+
