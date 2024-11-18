@@ -1,4 +1,3 @@
-// Node.h
 #ifndef NODE_H
 #define NODE_H
 
@@ -13,36 +12,12 @@ private:
     Node* prev;
 
 public:
-    Node();
     Node(const string& w);
-    string getWord() const;      
+    string getWord();
     void setNext(Node* n);
     void setPrev(Node* p);
-    Node* getNext() const;        
-    Node* getPrev() const;        
-    void setWord(const string& newWord);
+    Node* getNext();
+    Node* getPrev();
 };
-
-// Declare operator overloads as non-member functions
-bool operator==(const Node& lhs, const Node& rhs);
-bool operator!=(const Node& lhs, const Node& rhs);
-bool operator<(const Node& lhs, const Node& rhs);
-bool operator>(const Node& lhs, const Node& rhs);
-bool operator<=(const Node& lhs, const Node& rhs);
-bool operator>=(const Node& lhs, const Node& rhs);
-
-bool operator==(const Node& lhs, const string& rhs);
-bool operator!=(const Node& lhs, const string& rhs);
-bool operator<(const Node& lhs, const string& rhs);
-bool operator>(const Node& lhs, const string& rhs);
-bool operator<=(const Node& lhs, const string& rhs);
-bool operator>=(const Node& lhs, const string& rhs);
-
-bool operator==(const string& lhs, const Node& rhs);
-bool operator!=(const string& lhs, const Node& rhs);
-bool operator<(const string& lhs, const Node& rhs);
-bool operator>(const string& lhs, const Node& rhs);
-bool operator<=(const string& lhs, const Node& rhs);
-bool operator>=(const string& lhs, const Node& rhs);
 
 #endif
