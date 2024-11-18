@@ -5,6 +5,10 @@ using namespace std;
 
 LinkedList::LinkedList() : head(nullptr), tail(nullptr), listSize(0) {}
 
+LinkedList::LinkedList(const string& wordInfo) : head(nullptr), tail(nullptr), listSize(0) {
+    push_back(wordInfo);
+}
+
 LinkedList::~LinkedList() {
     Node* current = head;
     while (current != nullptr) {
@@ -51,4 +55,24 @@ void LinkedList::print(ostream& os) {
         os << (*current).getWord() << endl;
         current = (*current).getNext();
     }
+}
+
+Node* LinkedList::getHead() const {
+    return head;
+}
+
+Node* LinkedList::getTail() const {
+    return tail;
+}
+
+void LinkedList::setHead(Node* h) {
+    head = h;
+}
+
+void LinkedList::setTail(Node* t) {
+    tail = t;
+}
+
+void LinkedList::setSize(int s) {
+    listSize = s;
 }
