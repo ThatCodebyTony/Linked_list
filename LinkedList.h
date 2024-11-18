@@ -1,4 +1,4 @@
-
+// LinkedList.h
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
@@ -14,15 +14,21 @@ private:
     Node* tail;
     int listSize;
 
+    void setHead(Node* h);
+    void setTail(Node* t);
+    void setSize(int s);
+
 public:
     LinkedList();
+    LinkedList(const string& wordInfo);
     ~LinkedList();
     void push_back(const string& word);
     void clear();
     int size();
     void print(ostream& os = cout);
 
-    
+    Node* getHead() const;
+    Node* getTail() const;
 };
 
 #endif
