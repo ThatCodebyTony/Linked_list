@@ -1,107 +1,54 @@
-#include "Node.h"
+#include "LinkedList.h"
+#include <iostream>
 
-Node::Node() : next(nullptr), prev(nullptr) {}
+using namespace std;
 
-Node::Node(const string& w) : word(w), next(nullptr), prev(nullptr) {}
+LinkedList::LinkedList() : head(nullptr), tail(nullptr), listSize(0) {}
 
-string Node::getWord() const {
-    return word;
+LinkedList::~LinkedList() {
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = (*current).getNext();
+        delete current;
+        current = nextNode;
+    }
 }
 
-void Node::setWord(const string& newWord) {
-    word = newWord;
+void LinkedList::push_back(const string& word) {
+    Node* newNode = new Node(word);
+    if (tail == nullptr) {
+        // List is empty
+        head = newNode;
+        tail = newNode;
+    } else {
+        (*tail).setNext(newNode);
+        (*newNode).setPrev(tail);
+        tail = newNode;
+    }
+    listSize++;
 }
 
-Node* Node::getNext() const {
-    return next;
+int LinkedList::size() {
+    return listSize;
 }
 
-void Node::setNext(Node* n) {
-    next = n;
+void LinkedList::clear() {
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = current->getNext();  // Save the next node
+        delete current;  // Delete the current node
+        current = nextNode;  // Move to the next node
+    }
+    head = nullptr;  // Reset head and tail to nullptr after clearing
+    tail = nullptr;
+    listSize = 0;  // Reset list size to 0
 }
 
-Node* Node::getPrev() const {
-    return prev;
-}
 
-void Node::setPrev(Node* p) {
-    prev = p;
-}
-
-
-// Non-member operator overloads
-
-// Node compared to Node
-bool operator==(const Node& lhs, const Node& rhs) {
-    return lhs.getWord() == rhs.getWord();
-}
-
-bool operator!=(const Node& lhs, const Node& rhs) {
-    return lhs.getWord() != rhs.getWord();
-}
-
-bool operator<(const Node& lhs, const Node& rhs) {
-    return lhs.getWord() < rhs.getWord();
-}
-
-bool operator>(const Node& lhs, const Node& rhs) {
-    return lhs.getWord() > rhs.getWord();
-}
-
-bool operator<=(const Node& lhs, const Node& rhs) {
-    return lhs.getWord() <= rhs.getWord();
-}
-
-bool operator>=(const Node& lhs, const Node& rhs) {
-    return lhs.getWord() >= rhs.getWord();
-}
-
-// Node compared to string
-bool operator==(const Node& lhs, const string& rhs) {
-    return lhs.getWord() == rhs;
-}
-
-bool operator!=(const Node& lhs, const string& rhs) {
-    return lhs.getWord() != rhs;
-}
-
-bool operator<(const Node& lhs, const string& rhs) {
-    return lhs.getWord() < rhs;
-}
-
-bool operator>(const Node& lhs, const string& rhs) {
-    return lhs.getWord() > rhs;
-}
-
-bool operator<=(const Node& lhs, const string& rhs) {
-    return lhs.getWord() <= rhs;
-}
-
-bool operator>=(const Node& lhs, const string& rhs) {
-    return lhs.getWord() >= rhs;
-}
-
-// String compared to Node
-bool operator==(const string& lhs, const Node& rhs) {
-    return lhs == rhs.getWord();
-}
-
-bool operator!=(const string& lhs, const Node& rhs) {
-    return lhs != rhs.getWord();
-}
-
-bool operator<(const string& lhs, const Node& rhs) {
-    return lhs < rhs.getWord();
-}
-
-bool operator>(const string& lhs, const Node& rhs) {
-    return lhs > rhs.getWord();
-}
-
-bool operator<=(const string& lhs, const Node& rhs) {
-    return lhs <= rhs.getWord();
-}
-
-bool operator>=(const string& lhs, const Node& rhs) {
-    return lhs >= rhs.getWord();
+void LinkedList::print(ostream& os) {
+    Node* current = head;
+    while (current != nullptr) {
+        os << (*current).getWord() << endl;
+        current = (*current).getNext();
+    }
 }
