@@ -2,6 +2,7 @@
 #include "LinkedList.h"
 #include <fstream>
 #include <string>
+#include "testll.h" 
 
 #define DEFAULT_DICT "dictionary1.txt"
 #define DEFAULT_OUTPUT_FILE "dict-updated.txt"
@@ -19,11 +20,13 @@ enum Actions {
     MERGE_DICTS = 8, 
     MERGE_SORT =9, 
     LOAD_NEW_DICT = 10, 
-    WRITE_DICT_TO_FILE = 11
+    WRITE_DICT_TO_FILE = 11,
+    UNIT_TEST = 12
+    
 }; 
 
 const int min_menu_option = 1;   // Not including Quit, which is zero
-const int max_menu_option = WRITE_DICT_TO_FILE;
+const int max_menu_option = UNIT_TEST;
 const int min_dict_option = 1;
 const int max_dict_option = 6;
 bool isDefaultFileWritten = false;
@@ -44,6 +47,7 @@ int getMenuChoice() {
     cout << "(" << MERGE_SORT << ")" << " Sort words (Merge Sort)" << endl;
     cout << "(" << LOAD_NEW_DICT << ")" << " Load a dictionary (closes current dictionary)" << endl;
     cout << "(" << WRITE_DICT_TO_FILE << ")" << " Write current dictionary to file" << endl;
+    cout << "(" << UNIT_TEST << ")" << " Unit test of data structure" << endl;
     cout << "Enter a number from " << min_menu_option << " to " << max_menu_option << ", or " 
          << min_menu_option - 1 << " to exit: " << endl;
 
@@ -55,7 +59,7 @@ int getMenuChoice() {
         return getMenuChoice(); 
     }
    
-    return userInput; 
+    return userInput;
 }
 
 void loadDictionary(LinkedList& list, const string& filename) {
@@ -137,6 +141,10 @@ void writeDictToFile(LinkedList& myList, string& filename) {
     cout << "                   ...Done!" << endl;
 }
 
+void unitTest() {
+    promptUnitTest();
+}
+
 int main() 
 {
     LinkedList* myList = new LinkedList; 
@@ -162,6 +170,9 @@ int main()
                 break;
             case WRITE_DICT_TO_FILE:
                 writeDictToFile(*myList, default_output_file_name);
+                break;
+            case UNIT_TEST:
+                promptUnitTest();
                 break;
             default:
                 cout << "Coming Soon!" << endl; 
