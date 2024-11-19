@@ -10,17 +10,21 @@
  *		(1) test that pointers are defined (in empty list, for instance)
  *		(2) test creation/deletion
  *		(3) test overload of comparison operators	
- *
+ *    (4) test overload of += operator
  *
  ********************************************************************************/
 #ifndef TESTLL_H 
 #define TESTLL_H 
 
-void testPrivate();        
+#include <string>
+
 void testNodeBasic();
 void testLinkedListBasic ();
 void testNodeCompOperators ();
+void testLinkedListCompOperator ();
 int getTestMenuChoice ();
 void promptUnitTest();
+std::string outputList (LinkedList * listPtr, bool reverse = false);
+
 
 #endif // TESTLL_H 
