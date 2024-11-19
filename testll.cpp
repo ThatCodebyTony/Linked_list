@@ -22,7 +22,8 @@
 
 using namespace std;
 
-enum Choices {DONE, PRIVATE, NODE_BASIC, LL_BASIC, NODE_COMP_OPERATORS, RUN_ALL}; 
+enum Choices {DONE, PRIVATE, NODE_BASIC, LL_BASIC, NODE_COMP_OPERATORS, LL_COMP_OPERATORS, RUN_ALL}; 
+
 
 const int max_test_menu_option = RUN_ALL;
 
@@ -59,123 +60,6 @@ void testPrivate () {
 }
 
 
-void testNodeBasic() {
-
-	cout 	<<  "\n===== NodeBasic: Methods Tested ================" << endl
-			<< left << setw(40) << " Node ();" 								<<	"Tests: A\n"
-			<< left << setw(40) <<  " Node (std::string wordInfo);" 		<<	"Tests: B, also C, D\n"
-			<< left << setw(40) <<  " std::string getWord() const;" 		<<	"Tests: A, also B, C, D\n"
-			<< left << setw(40) <<  " void setWord (std::string newWord);" 	<< 	"Tests: C\n"
-			<< left << setw(40) <<  " Node * getNext() const;" 				<<	"Tests: A, B, D\n"
-			<< left << setw(40) <<  " void setNext (Node * newNext);" 		<<	"Tests: D\n"
-			<< left << setw(40) <<  " Node * getPrev() const;" 				<<	"Tests: A,B, D\n"
-			<< left << setw(40) <<  " void setPrev (Node * newPrev);" 		<<	"Tests: D\n"
-			<<  "\n=================================================" << endl;
-
-
-	// test #A: create Node
-	{
-		cout << "\n----- NodeBasic: Test A --------------------" << endl;
-		Node * tNodePtr = new Node;
-		
-		cout << "## CALL TO:\tNode * tNodePtr = new Node;\t##" << endl
-			 << "## Expected behavior: String/data should be empty and pointers should equal NULL (or nullptr).\t##"
-			 << "\n-------------------------------------------" << endl;
-
-		if ((*tNodePtr).getWord() == "") 	cout << "# 1. Word is empty" << endl;
-		else 								cout << "\t\tERROR: # 1. Word is " << (*tNodePtr).getWord() << endl;
-		if ((*tNodePtr).getNext() == NULL) 	cout << "# 2. Next is NULL" << endl;
-		else 								cout << "\t\tERROR: # 2. Next is not NULL" << endl;
-		if ((*tNodePtr).getPrev() == NULL) 	cout << "# 3. Prev is NULL" << endl;
-		else 								cout << "\t\tERROR: # 3. Prev is not NULL" << endl;
-		delete tNodePtr;
-		tNodePtr = NULL;
-		cout << "\n-------------------------------------------" << endl;
-	}
-	
-	// test #B: create Node with word
-	{
-		cout << "\n----- NodeBasic: Test B --------------------" << endl;
-		Node * tNodePtr = new Node("test");
-		
-		cout << "## CALL TO:\tNode * tNodePtr = new Node(\"test\");\t##" << endl
-			 << "## Expected behavior: String/data should be \"test\" and pointers should equal NULL (or nullptr).\t##"
-			 << "\n-------------------------------------------" << endl;
-
-		if ((*tNodePtr).getWord() == "test")cout << "# 1. Word is \'test\'" << endl;
-		else 								cout << "\t\tERROR: # 1. Word is " << (*tNodePtr).getWord() << endl;
-		if ((*tNodePtr).getNext() == NULL) 	cout << "# 2. Next is NULL" << endl;
-		else 								cout << "\t\tERROR: # 2. Next is not NULL" << endl;
-		if ((*tNodePtr).getPrev() == NULL) 	cout << "# 3. Prev is NULL" << endl;
-		else 								cout << "\t\tERROR: # 3. Prev is not NULL" << endl;
-		delete tNodePtr;
-		tNodePtr = NULL;
-		cout << "\n-------------------------------------------" << endl;
-	}
-	
-	
-	// test #C: create Node with word & update
-	{
-		cout << "\n----- NodeBasic: Test C -------------------------------" << endl;
-		Node * tNodePtr = new Node("test");
-		
-		
-		cout << "## CALLS TO:\tNode * tNodePtr = new Node(\"test\");\n"
-			 << "##          \t(*tNodePtr).setWord(\"change\");\t##" << endl
-			 << "## Expected behavior: String/data should first be \"test\" and then should equal \"change\".\t##"
-			 << "\n-------------------------------------------" << endl;
-
-		if ((*tNodePtr).getWord() == "test")	cout << "# 1. Word is \'test\'" << endl;
-		else 									cout << "\t\tERROR: # 1. Word is " << (*tNodePtr).getWord() << endl;
-		(*tNodePtr).setWord("change");
-		if ( (*tNodePtr).getWord() == "change")	cout << "# 2. Word is \'change\'" << endl;
-		else 									cout << "\t\tERROR: # 2. Word is " << (*tNodePtr).getWord() << endl;
-	
-		cout << "\n-------------------------------------------" << endl;
-	}
-	
-	
-	// test #D: create Nodes with words & link
-	{
-		cout << "\n----- NodeBasic: Test D --------------------" << endl;
-		Node * tNodePtr = new Node("original");
-		
-		
-		cout << "## CALLS TO:\tNode * tNodePtr = new Node(\"original\");\n"
-			 << "##          \tNode * tNextPtr = new Node(\"second\");\t##" << endl
-			 << "##          \t(*tNodePtr).setNext(tNextPtr);\t##" << endl
-			 << "##          \tNode * tPrevPtr = new Node(\"first\");\t##" << endl
-			 << "##          \t(*tNodePtr).setPrev(tPrevPtr);\t##" << endl
-			 << "## Expected behavior: From the  \"original\" Node, should be able to "
-			 <<				 "access/read prev & next Nodes.\t##"
-			 << "\n-------------------------------------------" << endl;
-
-		Node * tNextPtr = new Node("second");
-		(*tNodePtr).setNext(tNextPtr);
-		
-		Node * tPrevPtr = new Node("first");
-		(*tNodePtr).setPrev(tPrevPtr);
-		
-		if ( (*tNodePtr).getNext() == tNextPtr  && (*(*tNodePtr).getNext()).getWord() == "second" ) 	
-			cout << "# 1. getNext())->getWord() is \'" << (*(*tNodePtr).getNext()).getWord() << "\'" << endl;
-		else 									cout << "\t\tERROR: # 1. Next fails" << endl;
-		if ( (*(*tNodePtr).getNext()).getNext() == NULL ) 	cout << "# 2. Next->next is NULL " << endl;
-		else 									cout << "\t\tERROR: # 2. Next->next is not NULL" << endl;
-		if ( (*tNodePtr).getPrev() == tPrevPtr	&& (*(*tNodePtr).getPrev()).getWord() == "first" ) 	
-			cout << "# 3. getPrev())->getWord() is \'" << (*(*tNodePtr).getPrev()).getWord() << "\'" << endl;
-		else 									cout << "\t\tERROR: # 3. Prev is not NULL" << endl;
-		if ( (*(*tNodePtr).getPrev()).getPrev() == NULL ) 	cout << "# 4. Prev->prev is NULL " << endl;
-		else 									cout << "\t\tERROR: # 4. Prev->prev is not NULL" << endl;
-		delete tNodePtr;
-		tNodePtr = NULL;
-		delete tNextPtr;
-		tNextPtr = NULL;
-		delete tPrevPtr;
-		tPrevPtr = NULL;
-		cout << "\n-------------------------------------------" << endl;
-	}
-
-} // end testNodeBasic()
 
 
 
@@ -248,6 +132,7 @@ void testNodeCompOperators () {
 		delete tNodeCptr;
 		tNodeCptr = NULL;
 		cout << "\n-------------------------------------------" << endl;
+		cout << endl;
 	}
 	
 	// test #B: test comparison operators, Node v String
@@ -514,6 +399,7 @@ int getTestMenuChoice () {
 			 << "  (" << NODE_BASIC <<") Run basic Node tests\n" 
 			 << "  (" << LL_BASIC <<") Run basic Linked List tests\n"
 			 << "  (" << NODE_COMP_OPERATORS <<") Test comparison operator overload of Node\n"
+			 << "  (" << LL_COMP_OPERATORS <<") Test += operator overload of LinkedList\n"
 			 << "  (" << RUN_ALL <<") Run all tests \n"
 			 << "Enter a number from 1 to " << max_test_menu_option << ", or " << DONE << " to exit: ";
 		cin >> choiceOption;
@@ -539,7 +425,266 @@ int getTestMenuChoice () {
 
 } // end getTestMenuChoice()
 
+void testNodeBasic() {
+
+	cout 	<<  "\n===== NodeBasic: Methods Tested ================" << endl
+			<< left << setw(40) << " Node ();" 								<<	"Tests: A\n"
+			<< left << setw(40) <<  " Node (std::string wordInfo);" 		<<	"Tests: B, also C, D\n"
+			<< left << setw(40) <<  " std::string getWord() const;" 		<<	"Tests: A, also B, C, D\n"
+			<< left << setw(40) <<  " void setWord (std::string newWord);" 	<< 	"Tests: C\n"
+			<< left << setw(40) <<  " Node * getNext() const;" 				<<	"Tests: A, B, D\n"
+			<< left << setw(40) <<  " void setNext (Node * newNext);" 		<<	"Tests: D\n"
+			<< left << setw(40) <<  " Node * getPrev() const;" 				<<	"Tests: A,B, D\n"
+			<< left << setw(40) <<  " void setPrev (Node * newPrev);" 		<<	"Tests: D\n"
+			<<  "\n=================================================" << endl;
+
+
+	// test #A: create Node
+	{
+		cout << "\n----- NodeBasic: Test A --------------------" << endl;
+		Node * tNodePtr = new Node;
+		
+		cout << "## CALL TO:\tNode * tNodePtr = new Node;\t##" << endl
+			 << "## Expected behavior: String/data should be empty and pointers should equal NULL (or nullptr).\t##"
+			 << "\n-------------------------------------------" << endl;
+
+		if ((*tNodePtr).getWord() == "") 	cout << "# 1. Word is empty" << endl;
+		else 								cout << "\t\tERROR: # 1. Word is " << (*tNodePtr).getWord() << endl;
+		if ((*tNodePtr).getNext() == NULL) 	cout << "# 2. Next is NULL" << endl;
+		else 								cout << "\t\tERROR: # 2. Next is not NULL" << endl;
+		if ((*tNodePtr).getPrev() == NULL) 	cout << "# 3. Prev is NULL" << endl;
+		else 								cout << "\t\tERROR: # 3. Prev is not NULL" << endl;
+		delete tNodePtr;
+		tNodePtr = NULL;
+		cout << "\n-------------------------------------------" << endl;
+	}
 	
+	// test #B: create Node with word
+	{
+		cout << "\n----- NodeBasic: Test B --------------------" << endl;
+		Node * tNodePtr = new Node("test");
+		
+		cout << "## CALL TO:\tNode * tNodePtr = new Node(\"test\");\t##" << endl
+			 << "## Expected behavior: String/data should be \"test\" and pointers should equal NULL (or nullptr).\t##"
+			 << "\n-------------------------------------------" << endl;
+
+		if ((*tNodePtr).getWord() == "test")cout << "# 1. Word is \'test\'" << endl;
+		else 								cout << "\t\tERROR: # 1. Word is " << (*tNodePtr).getWord() << endl;
+		if ((*tNodePtr).getNext() == NULL) 	cout << "# 2. Next is NULL" << endl;
+		else 								cout << "\t\tERROR: # 2. Next is not NULL" << endl;
+		if ((*tNodePtr).getPrev() == NULL) 	cout << "# 3. Prev is NULL" << endl;
+		else 								cout << "\t\tERROR: # 3. Prev is not NULL" << endl;
+		delete tNodePtr;
+		tNodePtr = NULL;
+		cout << "\n-------------------------------------------" << endl;
+	}
+	
+	
+	// test #C: create Node with word & update
+	{
+		cout << "\n----- NodeBasic: Test C -------------------------------" << endl;
+		Node * tNodePtr = new Node("test");
+		
+		
+		cout << "## CALLS TO:\tNode * tNodePtr = new Node(\"test\");\n"
+			 << "##          \t(*tNodePtr).setWord(\"change\");\t##" << endl
+			 << "## Expected behavior: String/data should first be \"test\" and then should equal \"change\".\t##"
+			 << "\n-------------------------------------------" << endl;
+
+		if ((*tNodePtr).getWord() == "test")	cout << "# 1. Word is \'test\'" << endl;
+		else 									cout << "\t\tERROR: # 1. Word is " << (*tNodePtr).getWord() << endl;
+		(*tNodePtr).setWord("change");
+		if ( (*tNodePtr).getWord() == "change")	cout << "# 2. Word is \'change\'" << endl;
+		else 									cout << "\t\tERROR: # 2. Word is " << (*tNodePtr).getWord() << endl;
+	
+		cout << "\n-------------------------------------------" << endl;
+	}
+	
+	
+	// test #D: create Nodes with words & link
+	{
+		cout << "\n----- NodeBasic: Test D --------------------" << endl;
+		Node * tNodePtr = new Node("original");
+		
+		
+		cout << "## CALLS TO:\tNode * tNodePtr = new Node(\"original\");\n"
+			 << "##          \tNode * tNextPtr = new Node(\"second\");\t##" << endl
+			 << "##          \t(*tNodePtr).setNext(tNextPtr);\t##" << endl
+			 << "##          \tNode * tPrevPtr = new Node(\"first\");\t##" << endl
+			 << "##          \t(*tNodePtr).setPrev(tPrevPtr);\t##" << endl
+			 << "## Expected behavior: From the  \"original\" Node, should be able to "
+			 <<				 "access/read prev & next Nodes.\t##"
+			 << "\n-------------------------------------------" << endl;
+
+		Node * tNextPtr = new Node("second");
+		(*tNodePtr).setNext(tNextPtr);
+		
+		Node * tPrevPtr = new Node("first");
+		(*tNodePtr).setPrev(tPrevPtr);
+		
+		if ( (*tNodePtr).getNext() == tNextPtr  && (*(*tNodePtr).getNext()).getWord() == "second" ) 	
+			cout << "# 1. getNext())->getWord() is \'" << (*(*tNodePtr).getNext()).getWord() << "\'" << endl;
+		else 									cout << "\t\tERROR: # 1. Next fails" << endl;
+		if ( (*(*tNodePtr).getNext()).getNext() == NULL ) 	cout << "# 2. Next->next is NULL " << endl;
+		else 									cout << "\t\tERROR: # 2. Next->next is not NULL" << endl;
+		if ( (*tNodePtr).getPrev() == tPrevPtr	&& (*(*tNodePtr).getPrev()).getWord() == "first" ) 	
+			cout << "# 3. getPrev())->getWord() is \'" << (*(*tNodePtr).getPrev()).getWord() << "\'" << endl;
+		else 									cout << "\t\tERROR: # 3. Prev is not NULL" << endl;
+		if ( (*(*tNodePtr).getPrev()).getPrev() == NULL ) 	cout << "# 4. Prev->prev is NULL " << endl;
+		else 									cout << "\t\tERROR: # 4. Prev->prev is not NULL" << endl;
+		delete tNodePtr;
+		tNodePtr = NULL;
+		delete tNextPtr;
+		tNextPtr = NULL;
+		delete tPrevPtr;
+		tPrevPtr = NULL;
+		cout << "\n-------------------------------------------" << endl;
+	}
+
+} // end testNodeBasic()
+
+void testLinkedListCompOperator() {
+    cout << "-----LL_Comp: Test A --------------------" << endl;
+    LinkedList* list2Ptr = new LinkedList;
+    (*list2Ptr).push_back(new Node("kiwi"));
+    (*list2Ptr).push_back(new Node("orange"));
+    (*list2Ptr).push_back(new Node("tangerine"));
+    (*list2Ptr).push_back(new Node("watermelon"));
+
+	cout << "## CALLS TO:	LinkedList * list2Ptr = new LinkedList; ##" << endl;
+	cout << "##          	 (*list2Ptr).push_back(new Node(\"tangerine\"));   // four Nodes in total 	##" << endl;
+	cout << "## Expected behavior: List should have four Nodes: size == 4 and head and " << endl;
+	cout << "                      tail pointers should be pointing at \"kiwi\" and \"watermelon\".	##" << endl;
+	cout << "-------------------------------------------" << endl;
+
+    // Test the first list
+    if (list2Ptr->getTail() != NULL && list2Ptr->getTail()->getWord() == "watermelon") 
+        cout << "# 1. Tail is not NULL, correctly points to 'watermelon'" << endl;
+    else 
+        cout << "\t\tERROR: # 1. Tail is not correctly set" << endl;
+
+    if (list2Ptr->getHead() != NULL && list2Ptr->getHead()->getWord() == "kiwi") 
+        cout << "# 2. Head is not NULL, correctly points to 'kiwi'" << endl;
+    else 
+        cout << "\t\tERROR: # 2. Head is not correctly set" << endl;
+
+    if (list2Ptr->getTail()->getNext() == NULL) 
+        cout << "# 3a. Tail->next is NULL" << endl;
+    else 
+        cout << "\t\tERROR: # 3a. Tail->next is not NULL" << endl;
+
+    if (list2Ptr->getHead()->getPrev() == NULL) 
+        cout << "# 3b. Head->Prev is NULL" << endl;
+    else 
+        cout << "\t\tERROR: # 3b. Head->Prev is not NULL" << endl;
+
+    if (list2Ptr->size() == 4) 
+        cout << "# 4. size is " << list2Ptr->size() << endl;
+    else 
+        cout << "\t\tERROR: # 4. Incorrect size" << endl;
+
+    string listContents;
+    Node* currentNode = list2Ptr->getHead();
+    while (currentNode != NULL) {
+        listContents += currentNode->getWord() + " ";
+        currentNode = currentNode->getNext();
+    }
+    if (listContents == "kiwi orange tangerine watermelon ") 
+        cout << "# 5. navigating list correctly gives all words as '" << listContents << "'" << endl;
+    else 
+        cout << "\t\tERROR: # 5. List contents do not match expected order" << endl;
+
+    string reverseListContents;
+    currentNode = list2Ptr->getTail();
+    while (currentNode != NULL) {
+        reverseListContents += currentNode->getWord() + " ";
+        currentNode = currentNode->getPrev();
+    }
+    if (reverseListContents == "watermelon tangerine orange kiwi ") 
+        cout << "# 6. navigating list in reverse correctly gives all words as '" << reverseListContents << "'" << endl;
+    else 
+        cout << "\t\tERROR: # 6. List contents in reverse do not match expected order" << endl;
+
+    cout << "-------------------------------------------" << endl;
+
+    // Now for test B: Merging two lists.
+    cout << "-----LL_Comp: Test B --------------------" << endl;
+    LinkedList* list1Ptr = new LinkedList;
+    (*list1Ptr).push_back(new Node("apple"));
+    (*list1Ptr).push_back(new Node("banana"));
+    (*list1Ptr).push_back(new Node("cherry"));
+    (*list1Ptr).push_back(new Node("grape"));
+
+    cout << "## CALLS TO:	*list1Ptr += *list2Ptr;	##" << endl;
+	cout << "##          	 " << endl;
+    cout << "## Expected behavior: List should have eight Nodes: size == 8 and head and tail pointers should be pointing at \"apple\" and \"watermelon\".	##" << endl;
+	cout << "-------------------------------------------" << endl;
+
+
+
+    // Merging lists
+    (*list1Ptr) += (*list2Ptr);
+
+    // Test the merged list
+    if (list1Ptr->getTail() != NULL && list1Ptr->getTail()->getWord() == "watermelon") 
+        cout << "# 1. Tail is not NULL, correctly points to 'watermelon'" << endl;
+    else 
+        cout << "\t\tERROR: # 1. Tail is not correctly set" << endl;
+
+    if (list1Ptr->getHead() != NULL && list1Ptr->getHead()->getWord() == "apple") 
+        cout << "# 2. Head is not NULL, correctly points to 'apple'" << endl;
+    else 
+        cout << "\t\tERROR: # 2. Head is not correctly set" << endl;
+
+    if (list1Ptr->getTail()->getNext() == NULL) 
+        cout << "# 3a. Tail->next is NULL" << endl;
+    else 
+        cout << "\t\tERROR: # 3a. Tail->next is not NULL" << endl;
+
+    if (list1Ptr->getHead()->getPrev() == NULL) 
+        cout << "# 3b. Head->Prev is NULL" << endl;
+    else 
+        cout << "\t\tERROR: # 3b. Head->Prev is not NULL" << endl;
+
+    if (list1Ptr->size() == 8) 
+        cout << "# 4. size is " << list1Ptr->size() << endl;
+    else 
+        cout << "\t\tERROR: # 4. Incorrect size" << endl;
+
+    string mergedListContents;
+    Node* currentMergedNode = list1Ptr->getHead();
+    while (currentMergedNode != NULL) {
+        mergedListContents += currentMergedNode->getWord() + " ";
+        currentMergedNode = currentMergedNode->getNext();
+    }
+    if (mergedListContents == "apple banana cherry grape kiwi orange tangerine watermelon ") 
+        cout << "# 5. navigating list correctly gives all words as '" << mergedListContents << "'" << endl;
+    else 
+        cout << "\t\tERROR: # 5. List contents do not match expected order" << endl;
+
+    string reverseMergedListContents;
+    currentMergedNode = list1Ptr->getTail();
+    while (currentMergedNode != NULL) {
+        reverseMergedListContents += currentMergedNode->getWord() + " ";
+        currentMergedNode = currentMergedNode->getPrev();
+    }
+    if (reverseMergedListContents == "watermelon tangerine orange kiwi grape cherry banana apple ") 
+        cout << "# 6. navigating list in reverse correctly gives all words as '" << reverseMergedListContents << "'" << endl;
+    else 
+        cout << "\t\tERROR: # 6. List contents in reverse do not match expected order" << endl;
+
+    cout << "# 7. size of list2Ptr is " << list2Ptr->size() << endl;
+    cout << "# 8. Tail of list2Ptr is " << (list2Ptr->getTail() == NULL ? "NULL" : "Not NULL") << endl;
+    cout << "# 9. Head of list2Ptr is " << (list2Ptr->getHead() == NULL ? "NULL" : "Not NULL") << endl;
+	cout << endl;
+	cout << "-------------------------------------------" << endl;
+
+    delete list1Ptr;
+    delete list2Ptr;
+}
+
+
+
 void promptUnitTest() {
 	/* variables */
 	int menuChoice;
@@ -560,11 +705,15 @@ void promptUnitTest() {
 			case NODE_COMP_OPERATORS: 
 				testNodeCompOperators ();
 				break;
+			case LL_COMP_OPERATORS: 
+				testLinkedListCompOperator ();
+				break;
 			case RUN_ALL: 
 				testPrivate ();
 				testNodeBasic();
 				testLinkedListBasic ();
 				testNodeCompOperators ();
+				testLinkedListCompOperator ();
 				break;
 			default: 	//DONE entered zero, exit
 				cout << "Returning to main menu." << endl;	
@@ -575,4 +724,3 @@ void promptUnitTest() {
 	} while (menuChoice != 0);
 
 } //end promptUnitTest()
-
