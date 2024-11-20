@@ -39,6 +39,8 @@ public:
 
     Node* getHead() const;
     Node* getTail() const;
+    
+    void mergeDicts(LinkedList* listB);
 };
 
 // Function declaration for external use
