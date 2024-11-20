@@ -319,3 +319,134 @@ Node* LinkedList::insert_before(string newWord, Node* knownNode) {
     return newNode;
 }
 
+void LinkedList::mergeDicts(LinkedList* listB) {
+    Node* currentA = this->head;
+    Node* currentB = listB->head;
+    Node* mergedHead = nullptr;
+    Node* mergedTail = nullptr;
+    int newSize = 0;
+
+    while (currentA != nullptr && currentB != nullptr) {
+        if (currentA->getWord() < currentB->getWord()) {
+            Node* nextA = currentA->getNext();
+
+            // Detach currentA
+            currentA->setPrev(nullptr);
+            currentA->setNext(nullptr);
+
+            // Append currentA to merged list
+            if (mergedTail == nullptr) {
+                mergedHead = currentA;
+                mergedTail = currentA;
+            } else {
+                mergedTail->setNext(currentA);
+                currentA->setPrev(mergedTail);
+                mergedTail = currentA;
+            }
+
+            currentA = nextA;
+            newSize++;
+        } else if (currentA->getWord() > currentB->getWord()) {
+            Node* nextB = currentB->getNext();
+
+            // Detach currentB
+            currentB->setPrev(nullptr);
+            currentB->setNext(nullptr);
+
+            // Append currentB to merged list
+            if (mergedTail == nullptr) {
+                mergedHead = currentB;
+                mergedTail = currentB;
+            } else {
+                mergedTail->setNext(currentB);
+                currentB->setPrev(mergedTail);
+                mergedTail = currentB;
+            }
+
+            currentB = nextB;
+            newSize++;
+        } else {
+            // Words are equal, include one and delete the other
+            Node* nextA = currentA->getNext();
+            Node* nextB = currentB->getNext();
+
+            // Detach currentA
+            currentA->setPrev(nullptr);
+            currentA->setNext(nullptr);
+
+            // Append currentA to merged list
+            if (mergedTail == nullptr) {
+                mergedHead = currentA;
+                mergedTail = currentA;
+            } else {
+                mergedTail->setNext(currentA);
+                currentA->setPrev(mergedTail);
+                mergedTail = currentA;
+            }
+
+            // Delete currentB
+            delete currentB;
+            listB->listSize--;
+
+            currentA = nextA;
+            currentB = nextB;
+            newSize++;
+        }
+    }
+
+    // Append remaining nodes from currentA
+    while (currentA != nullptr) {
+        Node* nextA = currentA->getNext();
+
+        // Detach currentA
+        currentA->setPrev(nullptr);
+        currentA->setNext(nullptr);
+
+        // Append currentA to merged list
+        if (mergedTail == nullptr) {
+            mergedHead = currentA;
+            mergedTail = currentA;
+        } else {
+            mergedTail->setNext(currentA);
+            currentA->setPrev(mergedTail);
+            mergedTail = currentA;
+        }
+
+        currentA = nextA;
+        newSize++;
+    }
+
+    // Append remaining nodes from currentB
+    while (currentB != nullptr) {
+        Node* nextB = currentB->getNext();
+
+        // Detach currentB
+        currentB->setPrev(nullptr);
+        currentB->setNext(nullptr);
+
+        // Append currentB to merged list
+        if (mergedTail == nullptr) {
+            mergedHead = currentB;
+            mergedTail = currentB;
+        } else {
+            mergedTail->setNext(currentB);
+            currentB->setPrev(mergedTail);
+            mergedTail = currentB;
+        }
+
+        currentB = nextB;
+        newSize++;
+    }
+
+    // Update this list's head, tail, and size
+    this->head = mergedHead;
+    this->tail = mergedTail;
+    this->listSize = newSize;
+
+    // Clear listB
+    listB->head = nullptr;
+    listB->tail = nullptr;
+    listB->listSize = 0;
+}
+
+
