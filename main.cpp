@@ -336,6 +336,47 @@ void insertInOrder(LinkedList& myList) {
     myList.insert_in_order(cleanedWordToInsert);  // Use . instead of ->
 }
 
+void mergeDicts(LinkedList& currentDict, int& currentDictionary) {
+    // Notify user about merge preconditions
+    cout << "Reminder: for merge to work properly, dictionaries must already be sorted." << endl;
+    
+    // Ask the user for which dictionary they want to merge
+    int dictChoice;
+    cout << "Which Dictionary should be opened? Enter a number from \"" << min_dict_option << "\" to \"" << max_dict_option << "\": " << endl;
+    cin >> dictChoice;
+
+    // Ensure the user doesn't try to merge the same dictionary
+    if (dictChoice == currentDictionary) {
+        cout << "That dictionary is already open! Pick another." << endl;
+        return;
+    }
+
+    // Load the selected dictionary into a new LinkedList
+    LinkedList selectedDict;
+    string filename = "dictionary" + to_string(dictChoice) + ".txt";  // Assuming dictionary files are named dictionary1.txt, dictionary2.txt, etc.
+    
+    // Attempt to load the dictionary
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "ERROR! Cannot read chosen dictionary " << filename << ". Dictionary " << currentDictionary << " remains open." << endl;
+        return;
+    }
+    file.close();
+
+    loadDictionary(selectedDict, filename);  // Load the selected dictionary
+
+    // Perform the merge
+    cout << "Merging..." << endl;
+    currentDict.mergeDicts(&selectedDict);  // Merge the selected dictionary into the current one
+
+    // Update the currentDictionary number to one more than max_dict_option
+    currentDictionary = max_dict_option + 1;
+
+    cout << "           ...Done!" << endl;
+}
+
+
+
 
 
 int main() 
@@ -354,7 +395,6 @@ int main()
                 break; 
             case DICT_SIZE:
                 cout << "There are " << (*myList).size() << " words in dictionary #" << currentDictionary << "." << endl;
-                cout << endl;
                 break;
             case PRINT_TO_SCREEN:
                 (*myList).print();
@@ -380,11 +420,16 @@ int main()
             case INSERT_IN_ORDER:
                 insertInOrder(*myList);
                 break;
+            case MERGE_DICTS:
+
+                mergeDicts(*myList, currentDictionary);
+                break;
+
             default:
                 cout << "Coming Soon!" << endl; 
-                cout << endl;
                 break;
         }
+
     } while (choice != QUIT); 
 
     delete myList; // Clean up the allocated memory
