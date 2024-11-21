@@ -420,15 +420,11 @@ int main()
             case INSERT_IN_ORDER:
                 insertInOrder(*myList);
                 break;
-               case MERGE_DICTS:
-   
-                   mergeDicts(*myList, currentDictionary);
-                   break;
-            case MERGE_SORT:
-                cout << "sorting..." << endl;
-                myList->mergeSort();
-                cout << "           ...Done!" << endl;
+            case MERGE_DICTS:
+
+                mergeDicts(*myList, currentDictionary);
                 break;
+
             default:
                 cout << "Coming Soon!" << endl; 
                 break;
