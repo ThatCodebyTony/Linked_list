@@ -41,6 +41,10 @@ public:
     Node* getTail() const;
     
     void mergeDicts(LinkedList* listB);
+      void mergeSort();
+      void mergeSort(LinkedList* topListPtr);
+      void split(LinkedList& leftList, LinkedList& rightList);
+
 };
 
 // Function declaration for external use
