@@ -30,6 +30,7 @@ public:
     void clear();
     int size();
     void print(ostream& os = cout);
+    void reversePrint(ostream& os = cout);
     Node* linearSearch(const string& word, string& prevWord, string& nextWord);
     Node* deleteWord(Node* nodeToDelete);
     Node* insert_before(string newWord, Node* knownNode);
