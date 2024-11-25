@@ -11,17 +11,18 @@ using namespace std;
 enum Actions {
     QUIT = 0, 
     DICT_SIZE = 1, 
-    PRINT_TO_SCREEN = 2, 
-    ADD_WORD = 3, 
-    LINEAR_SEARCH = 4, 
-    DELETE_WORD = 5,
-    INSERT_IN_ORDER = 6, 
-    SWAP = 7, 
-    MERGE_DICTS = 8, 
-    MERGE_SORT =9, 
-    LOAD_NEW_DICT = 10, 
-    WRITE_DICT_TO_FILE = 11,
-    UNIT_TEST = 12
+    PRINT_TO_SCREEN = 2,
+    REVERSE_PRINT_TO_SCREEN = 3,
+    ADD_WORD = 4, 
+    LINEAR_SEARCH = 5, 
+    DELETE_WORD = 6,
+    INSERT_IN_ORDER = 7, 
+    SWAP = 8, 
+    MERGE_DICTS = 9, 
+    MERGE_SORT =10, 
+    LOAD_NEW_DICT = 11, 
+    WRITE_DICT_TO_FILE = 12,
+    UNIT_TEST = 13
     
 }; 
 
@@ -38,6 +39,7 @@ int getMenuChoice() {
     cout << "Options menu: " << endl;
     cout << "(" << DICT_SIZE << ")" << " Count - get number of words in dictionary list" << endl;
     cout << "(" << PRINT_TO_SCREEN << ")" << " Print words to screen" << endl;
+    cout << "(" << REVERSE_PRINT_TO_SCREEN << ")" << " Print words to screen in reverse order" << endl;
     cout << "(" << ADD_WORD << ")" << " Add a word (to end of dictionary list)" << endl;
     cout << "(" << LINEAR_SEARCH << ")" << " Find a word (Linear Search)" << endl;
     cout << "(" << DELETE_WORD << ")" << " Find word, delete if found" << endl;
@@ -95,10 +97,6 @@ void openDict(LinkedList& myList, int& currentDictionary) {
             cout << "That number is not in the available range! Pick another." << endl;
             cout << endl;
             cout << "Which Dictionary should be opened? Enter a number from \"" << min_dict_option << "\" to \"" << max_dict_option << "\": " << endl;
-        } else if (dictChoice == 10) {
-            cout << "ERROR! Cannot read chosen dictionary dictionary10.txt. Dictionary 1 remains open." << endl;
-            cout << endl;
-            validChoice = true;
         } else {
             validChoice = true;
             currentDictionary = dictChoice;
@@ -340,16 +338,23 @@ void mergeDicts(LinkedList& currentDict, int& currentDictionary) {
     // Notify user about merge preconditions
     cout << "Reminder: for merge to work properly, dictionaries must already be sorted." << endl;
     
-    // Ask the user for which dictionary they want to merge
     int dictChoice;
-    cout << "Which Dictionary should be opened? Enter a number from \"" << min_dict_option << "\" to \"" << max_dict_option << "\": " << endl;
-    cin >> dictChoice;
+    bool validChoice = false;
 
-    // Ensure the user doesn't try to merge the same dictionary
-    if (dictChoice == currentDictionary) {
-        cout << "That dictionary is already open! Pick another." << endl;
-        return;
-    }
+    // Ask the user for which dictionary they want to merge
+    do {
+        cout << "Which Dictionary should be opened? Enter a number from \"" << min_dict_option << "\" to \"" << max_dict_option << "\": " << endl;
+        cin >> dictChoice;
+
+        // Ensure the user doesn't try to merge the same dictionary
+        if (dictChoice == currentDictionary) {
+            cout << "That dictionary is already open! Pick another." << endl;
+        } else if (dictChoice < min_dict_option || dictChoice > max_dict_option) {
+            cout << "That number is not in the available range! Pick another." << endl;
+        } else {
+            validChoice = true;
+        }
+    } while (!validChoice);  // Continue asking until a valid choice is made
 
     // Load the selected dictionary into a new LinkedList
     LinkedList selectedDict;
@@ -374,6 +379,7 @@ void mergeDicts(LinkedList& currentDict, int& currentDictionary) {
 
     cout << "           ...Done!" << endl;
 }
+
 
 
 
@@ -421,13 +427,15 @@ int main()
                 insertInOrder(*myList);
                 break;
                case MERGE_DICTS:
-   
                    mergeDicts(*myList, currentDictionary);
                    break;
             case MERGE_SORT:
                 cout << "sorting..." << endl;
                 myList->mergeSort();
                 cout << "           ...Done!" << endl;
+                break;
+            case REVERSE_PRINT_TO_SCREEN:
+                myList->reversePrint();
                 break;
             default:
                 cout << "Coming Soon!" << endl; 
