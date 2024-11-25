@@ -90,6 +90,18 @@ void LinkedList::print(ostream& os) {
     }
 }
 
+void LinkedList::reversePrint(ostream& os) {
+    if (tail == nullptr) {
+        // os << "The list is empty." << endl;
+    } else {
+        Node* current = tail;
+        while (current != nullptr) {
+            os << current->getWord() << endl;
+            current = current->getPrev();
+        }
+    }
+}
+
 
 
 
