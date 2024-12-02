@@ -36,6 +36,18 @@ void LinkedList::push_back(const string& word) {
     }
     listSize++;
 }
+void LinkedList::push_back(Node* newWordNode) {
+    if (tail == nullptr) {
+        head = newWordNode;
+        tail = newWordNode;
+    } else {
+        (*tail).setNext(newWordNode);
+        (*newWordNode).setPrev(tail);
+        tail = newWordNode;
+    }
+    listSize++;
+}
+
 LinkedList& LinkedList::operator+=(LinkedList& otherList) {
     Node* current = otherList.getHead();
     while (current != nullptr) {
@@ -49,17 +61,6 @@ LinkedList& LinkedList::operator+=(LinkedList& otherList) {
     return *this;  // Return the current list (the one we're appending to)
 }
 
-void LinkedList::push_back(Node* newWordNode) {
-    if (tail == nullptr) {
-        head = newWordNode;
-        tail = newWordNode;
-    } else {
-        (*tail).setNext(newWordNode);
-        (*newWordNode).setPrev(tail);
-        tail = newWordNode;
-    }
-    listSize++;
-}
 
 
 int LinkedList::size() {
@@ -153,10 +154,6 @@ Node* LinkedList::linearSearch(const string& word, string& prevWord, string& nex
                 nextWord = current->getNext()->getWord();
             }
             return current;  // Return the node where the word is found
-        } else if (current->getWord() < word) {
-            prevWord = current->getWord();
-        } else if (current->getWord() > word && nextWord.empty()) {
-            nextWord = current->getWord();
         }
         current = current->getNext();
     }
